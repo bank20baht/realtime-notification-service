@@ -1,9 +1,9 @@
-const express = require("express");
+import express, { NextFunction, Request, Response } from "express";
+import EventSource from "eventsource";
 const app = express();
 
 app.get("/consume", (req, res) => {
   // Set up EventSource to listen to the producer service's SSE endpoint
-  const EventSource = require("eventsource");
   const producerUrl = "http://localhost:3000/events";
   const es = new EventSource(producerUrl);
 
@@ -37,6 +37,6 @@ app.get("/consume", (req, res) => {
 const CONSUMER_PORT = 3002;
 app.listen(CONSUMER_PORT, () => {
   console.log(
-    `Consumer service listening at http://localhost:${CONSUMER_PORT}`
+    `Consumer1 service listening at http://localhost:${CONSUMER_PORT}`
   );
 });
