@@ -34,7 +34,7 @@ app.get("/consume", (req, res) => {
   });
 });
 
-const CONSUMER_PORT = 3001;
+const CONSUMER_PORT = 3002;
 app.listen(CONSUMER_PORT, () => {
   console.log(
     `Consumer service listening at http://localhost:${CONSUMER_PORT}`
