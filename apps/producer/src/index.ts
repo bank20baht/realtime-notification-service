@@ -1,7 +1,7 @@
-const express = require("express");
+import express, { NextFunction, Request, Response } from "express";
 const app = express();
 
-app.get("/events", (req, res) => {
+app.get("/events", (req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
@@ -10,18 +10,17 @@ app.get("/events", (req, res) => {
 
   const intervalId = setInterval(() => {
     const data = new Date().toISOString();
-    sendEventsToAll(res, data); // Pass the 'res' object and data to the function
+    sendEventsToAll(res, data); // Passing Response object
   }, 5000);
 
-  // Clear interval when client connection is closed
   req.on("close", () => {
     console.log("offline");
     clearInterval(intervalId);
   });
 });
 
-function sendEventsToAll(res, data) {
-  // Add 'res' and 'data' as parameters
+function sendEventsToAll(res: Response, data: string) {
+  // Change Request to Response
   console.log(`data: ${JSON.stringify(data)}`);
   res.write(`data: ${JSON.stringify(data)}\n\n`);
 }
