@@ -47,7 +47,7 @@ app.get(
 async function setupProducerStream(userId: string) {
   const exchange = "direct_logs";
   const queue = ""; // Empty queue name means the queue is exclusive to the connection
-  const routingKey = userId; // Listen for messages with the routing key 'hello'
+  const routingKey = userId; // Use the user ID as the routing key
 
   const connection = await amqp.connect("amqp://admin:admin@localhost");
   const channel = await connection.createChannel();
@@ -61,8 +61,9 @@ async function setupProducerStream(userId: string) {
     `Waiting for messages with routing key: ${routingKey}. To exit press CTRL+C`
   );
 
-  // Initialize the list of subscribers
-  const subscribers: any = [];
+  // Initialize the list of subscribers for this user ID
+  const subscribers: any = {};
+  subscribers[userId] = [];
 
   // Consume messages from the queue and broadcast them to all subscribers
   channel.consume(
@@ -70,8 +71,8 @@ async function setupProducerStream(userId: string) {
     (msg) => {
       if (msg !== null) {
         console.log(`Received: ${msg.content.toString()}`);
-        // Broadcast the message to all subscribers
-        subscribers.forEach((subscriber: any) => {
+        // Broadcast the message to all subscribers for this user ID
+        subscribers[userId].forEach((subscriber: any) => {
           sendEventsToAll(subscriber, msg.content.toString());
         });
       }
@@ -82,12 +83,19 @@ async function setupProducerStream(userId: string) {
   // Return an object with methods to manage the producer stream
   return {
     subscribe: (subscriber: any) => {
-      subscribers.push(subscriber);
+      subscribers[userId].push(subscriber);
     },
     unsubscribe: (subscriber: any) => {
-      const index = subscribers.indexOf(subscriber);
+      const index = subscribers[userId].indexOf(subscriber);
       if (index > -1) {
-        subscribers.splice(index, 1);
+        subscribers[userId].splice(index, 1);
+      }
+      // If there are no more subscribers for this user ID, close the channel and connection
+      if (subscribers[userId].length === 0) {
+        channel.close();
+        connection.close();
+        // Remove the producer stream from the map
+        producerStreamMap.delete(userId);
       }
     },
     close: () => {
