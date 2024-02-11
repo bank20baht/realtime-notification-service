@@ -2,9 +2,11 @@ import express, { NextFunction, Request, Response } from "express";
 import EventSource from "eventsource";
 const app = express();
 
-app.get("/consume", (req, res) => {
+app.get("/consume/:user_id", (req, res) => {
   // Set up EventSource to listen to the producer service's SSE endpoint
-  const producerUrl = "http://localhost:3000/events";
+  const userId = req.params.user_id;
+
+  const producerUrl = `http://localhost:3000/events/${userId}`;
   const es = new EventSource(producerUrl);
 
   res.setHeader("Content-Type", "text/event-stream");

@@ -1,0 +1,15 @@
+{
+  "name": "broker",
+  "version": "1.0.0",
+  "description": "mock broker to send message into rabbitmq",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node sender.js"
+  },
+  "author": "Nattapong Promthong",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.10.3"
+  }
+}
