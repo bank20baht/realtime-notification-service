@@ -20,6 +20,10 @@
       "name": "broker",
       "path": "../apps/broker",
     },
+    {
+      "name": "sender",
+      "path": "../apps/sender",
+    },
   ],
   "settings": {
     "editor.insertSpaces": true,
