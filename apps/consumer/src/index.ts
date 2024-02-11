@@ -1,6 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
 import EventSource from "eventsource";
+import cors from "cors";
+
 const app = express();
+
+app.use(cors());
 
 app.get("/consume/:user_id", (req, res) => {
   // Set up EventSource to listen to the producer service's SSE endpoint
