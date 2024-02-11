@@ -1,0 +1,29 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "..",
+    },
+    {
+      "name": "frontend",
+      "path": "../apps/frontend",
+    },
+    {
+      "name": "producer",
+      "path": "../apps/producer",
+    },
+    {
+      "name": "consumer",
+      "path": "../apps/consumer",
+    },
+    {
+      "name": "broker",
+      "path": "../apps/broker",
+    },
+  ],
+  "settings": {
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "typescript.tsdk": "root\\node_modules\\typescript\\lib",
+  },
+}
