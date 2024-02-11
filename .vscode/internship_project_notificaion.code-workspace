@@ -24,6 +24,10 @@
       "name": "sender",
       "path": "../apps/sender",
     },
+    {
+      "name": "k6",
+      "path": "../apps/k6",
+    },
   ],
   "settings": {
     "editor.insertSpaces": true,
