@@ -1,68 +1,19 @@
-"use client";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { SelectProjectRoutes } from "./modules/selectproject";
+import { ProjectRoutes } from "./modules/project";
+import { LoginRoutes } from "./modules/login";
 
-import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import moment from "moment";
-import { IoIosNotifications } from "react-icons/io";
-type Props = {
-  params: {
-    id: string;
-  };
-};
-type NotificationData = {
-  id: string;
-  project_id: string;
-  description: string;
-  status: "unread" | "read";
-  created_at: string;
-  updated_at: string;
-};
-
-const App = () => {
-  const [notifications, setNotifications] = useState<string[]>([]);
-  const [filter, setFilter] = useState("All");
-
-  const params_id = 1;
-
-  const [historyNotification, setHistoryNotification] = useState<
-    NotificationData[]
-  >([]);
-  const [openModal, setOpenModal] = useState(false);
-
-  const userId = "user1";
-  const groupId = "group1";
-  useEffect(() => {
-    const eventSource = new EventSource(
-      `http://localhost:3002/consume?user_id=${userId}&group_id=${groupId}`
-    );
-
-    eventSource.addEventListener("message", (event) => {
-      const newNotification = event.data;
-      setNotifications((prevNotifications) => [
-        ...prevNotifications,
-        newNotification,
-      ]);
-      toast(newNotification);
-    });
-
-    return () => {
-      eventSource.close();
-    };
-  }, []);
-
+function App() {
+  const location = useLocation();
   return (
-    <div className=" h-[100dvh]">
-      <nav className="bg-white text-black shadow py-2"></nav>
-      <div className="text-6xl font-bold text-gray-400 flex justify-center items-center h-full">
-        Demo Application for 240-404 Internship Project
-        <br />
-        User#{params_id}
-      </div>
-      <ToastContainer position="bottom-left" hideProgressBar autoClose={5000} />
-    </div>
+    <>
+      <Routes location={location}>
+        <Route path="/" element={<SelectProjectRoutes />} />
+        <Route path="/project/:project_id" element={<ProjectRoutes />} />
+        <Route path="/login" element={<LoginRoutes />} />
+      </Routes>
+    </>
   );
-};
+}
 
 export default App;
