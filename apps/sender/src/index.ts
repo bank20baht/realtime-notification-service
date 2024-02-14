@@ -7,23 +7,24 @@ app.use(express.json());
 app.post(
   "/notification",
   async (req: Request, res: Response, next: NextFunction) => {
-    const id = req.body.id;
+    const id = req.body.user_id;
+    const group = req.body.group_id;
     const message = req.body.description;
-    const exchange = "direct_logs";
+    const exchange = "topic_logs"; // Changed to topic exchange name
 
     console.log(message);
-    const routingKey = `${id}`;
+    const routingKey = `${id}.${group}`; // Combined user ID and group ID as routing key
 
     try {
       const connection = await amqp.connect("amqp://admin:admin@localhost");
       const channel = await connection.createChannel();
 
-      await channel.assertExchange(exchange, "direct", { durable: false });
+      await channel.assertExchange(exchange, "topic", { durable: false }); // Assert topic exchange
 
       await channel.publish(
         exchange,
         routingKey,
-        Buffer.from(`user1 : ${message}`)
+        Buffer.from(`user${id} : ${message}`) // Use user ID in the message
       );
 
       res.status(201).send({ message: "send notification successful" });
