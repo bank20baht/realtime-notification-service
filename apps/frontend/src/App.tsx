@@ -31,10 +31,13 @@ const App = () => {
   >([]);
   const [openModal, setOpenModal] = useState(false);
 
+  const userId = "user1";
+  const groupId = "group1";
   useEffect(() => {
     const eventSource = new EventSource(
-      "http://localhost:3002/consume/" + params_id
+      `http://localhost:3002/consume?user_id=${userId}&group_id=${groupId}`
     );
+
     eventSource.addEventListener("message", (event) => {
       const newNotification = event.data;
       setNotifications((prevNotifications) => [

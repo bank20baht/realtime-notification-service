@@ -6,11 +6,12 @@ const app = express();
 
 app.use(cors());
 
-app.get("/consume/:user_id", (req, res) => {
+app.get("/consume", (req, res) => {
   // Set up EventSource to listen to the producer service's SSE endpoint
-  const userId = req.params.user_id;
+  const userId = req.query.user_id;
+  const groupId = req.query.group_id;
 
-  const producerUrl = `http://localhost:3000/events/${userId}`;
+  const producerUrl = `http://localhost:3000/events?user_id=${userId}&group_id=${groupId}`;
   const es = new EventSource(producerUrl);
 
   res.setHeader("Content-Type", "text/event-stream");
