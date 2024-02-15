@@ -35,10 +35,10 @@ const ProjectPage: FC = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const userId = "user1";
-  const groupId = "group1";
+
   useEffect(() => {
     const eventSource = new EventSource(
-      `http://localhost:3002/consume?user_id=${userId}&group_id=${groupId}`
+      `http://localhost:3002/consume?user_id=${userId}&group_id=${project_id}`
     );
 
     eventSource.addEventListener("message", (event) => {
@@ -65,7 +65,12 @@ const ProjectPage: FC = () => {
         <br />
         Project Id#{project_id}
       </div>
-      <ToastContainer position="bottom-left" hideProgressBar autoClose={5000} />
+      <ToastContainer
+        theme="dark"
+        position="bottom-left"
+        hideProgressBar
+        autoClose={5000}
+      />
     </div>
   );
 };
