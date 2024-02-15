@@ -9,9 +9,10 @@ export let options = {
 
 // Function to generate random message data
 function generateMessageData() {
-  const id = "1";
-  const description = `Message for user ${id}`;
-  return { id, description };
+  const user_id = "user1";
+  const description = `Message for user ${user_id}`;
+  const group_id = "group1";
+  return { user_id, group_id, description };
 }
 
 // Function to send a notification
@@ -33,8 +34,9 @@ export function sendNotification() {
 
 // Function to simulate an SSE connection
 export function simulateSSEConnection() {
-  const userId = "1"; // Random user id
-  const url = `http://localhost:3002/consume/${userId}`;
+  const userId = "user1"; // Random user id
+  const groupId = "group1";
+  const url = `http://localhost:3002/consume?user_id=${userId}&group_id=${groupId}`;
   const params = {
     headers: {
       Accept: "text/event-stream",
