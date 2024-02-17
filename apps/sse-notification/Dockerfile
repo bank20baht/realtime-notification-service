@@ -13,4 +13,4 @@ RUN yarn install --production
 RUN ls -alr
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "index.js"]
