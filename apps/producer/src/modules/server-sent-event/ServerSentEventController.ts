@@ -3,7 +3,7 @@ import Container, { Token } from "typedi";
 import {
   RabbitMQConnector,
   RabbitMQConnectorIdentifier,
-} from "../utils/connections/RabbitMQConnector";
+} from "../../utils/connections/RabbitMQConnector";
 
 interface ProducerStream {
   subscribe: (subscriber: Response) => void;
@@ -37,10 +37,8 @@ export const getEvents = async (
     producerStreamMap.set(MutexKeyName, producerStream);
   }
 
-  // Set the Content-Type header to text/event-stream
   res.setHeader("Content-Type", "text/event-stream");
 
-  // Set CORS headers if necessary
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST");
 
@@ -51,7 +49,6 @@ export const getEvents = async (
     producerStream.unsubscribe(res);
   });
 
-  // Add an error event listener to handle errors
   req.on("error", (err) => {
     console.error("Request error:", err);
     producerStream.unsubscribe(res);

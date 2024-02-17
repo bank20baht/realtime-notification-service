@@ -6,7 +6,7 @@ import {
   RabbitMQConnectorIdentifier,
 } from "./utils/connections/RabbitMQConnector";
 import cors from "cors";
-import router from "./routes/Notification";
+import serverSentEvent from "./modules/server-sent-event/ServerSentEventRoutes";
 
 async function initRabbitMQ() {
   const rabbitMQConnector = new RabbitMQConnector({
@@ -36,17 +36,13 @@ async function initServer() {
     res.json({ message: "API working" });
   });
 
-  app.use(router);
-
-  // Removed the invalid app.use() call
-
+  app.use(serverSentEvent);
   const PORT = 3000;
   app.listen(PORT, () => {
     console.log(`Producer service listening at http://localhost:${PORT}`);
   });
 }
 
-// Wrap the initialization in an async function to handle errors
 async function main() {
   try {
     await initRabbitMQ();
