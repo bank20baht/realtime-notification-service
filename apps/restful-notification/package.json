@@ -1,7 +1,7 @@
 {
-  "name": "sender",
+  "name": "restful-notification-app",
   "version": "1.0.0",
-  "description": "Restful API to send message to consummer can specific user or send all user who is online",
+  "description": "Restful API to send message to consumer can specific user, specific group or send all user who is online",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

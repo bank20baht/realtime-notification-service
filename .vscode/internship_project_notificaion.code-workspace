@@ -5,24 +5,21 @@
       "path": "..",
     },
     {
-      "name": "frontend",
-      "path": "../apps/frontend",
-    },
-    {
-      "name": "producer",
-      "path": "../apps/producer",
-    },
-    {
-      "name": "consumer",
-      "path": "../apps/consumer",
-    },
-    {
       "name": "broker",
       "path": "../apps/broker",
     },
     {
-      "name": "sender",
-      "path": "../apps/sender",
+      "name": "frontend",
+      "path": "../apps/frontend",
+    },
+    {
+      "name": "sse-notification",
+      "path": "../apps/sse-notification",
+    },
+
+    {
+      "name": "restful-notification",
+      "path": "../apps/restful-notification",
     },
     {
       "name": "k6",

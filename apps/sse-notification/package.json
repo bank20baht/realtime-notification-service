@@ -1,7 +1,7 @@
 {
-  "name": "producer",
+  "name": "sse-notification-app",
   "version": "1.0.0",
-  "description": "producer for sse to recive some data like rabbitmq connection",
+  "description": "producer for sse to receive some data like RabbitMQ connection",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
