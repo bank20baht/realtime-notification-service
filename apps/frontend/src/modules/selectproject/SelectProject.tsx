@@ -24,7 +24,6 @@ type NotificationData = {
 const mockProjects = [
   { id: "1", name: "Project A", description: "This is Project A." },
   { id: "2", name: "Project B", description: "This is Project B." },
-  // Add more projects as needed
 ];
 
 const SelectProjectPage: FC = () => {
@@ -42,7 +41,7 @@ const SelectProjectPage: FC = () => {
   const groupId = "group1";
   useEffect(() => {
     const eventSource = new EventSource(
-      `http://localhost:3002/consume?user_id=${userId}&group_id=${groupId}`
+      `${import.meta.env.VITE_APP_API_SSE_HOST}/events/user1/`
     );
 
     eventSource.addEventListener("message", (event) => {
