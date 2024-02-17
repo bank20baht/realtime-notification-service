@@ -36,6 +36,9 @@ async function initServer() {
     res.json({ message: "API working" });
   });
 
+  // Make sure to register the RabbitMQConnector before setting up the routes
+  await initRabbitMQ();
+
   app.use(notificationRouter);
 
   const PORT = 4000;
@@ -46,7 +49,6 @@ async function initServer() {
 
 async function main() {
   try {
-    await initRabbitMQ();
     await initServer();
   } catch (error) {
     console.error("Error during initialization:", error);

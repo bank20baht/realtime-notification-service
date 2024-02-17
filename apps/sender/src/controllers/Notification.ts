@@ -1,86 +1,37 @@
 import { NextFunction, Request, Response } from "express";
+import { NotificationService } from "../services/Notification";
 import Container from "typedi";
-import { RabbitMQConnectorIdentifier } from "../utils/connections/RabbitMQConnector";
 
-export const sentGroupNotification = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const group = req.body.project_id;
-  const message = req.body.description;
-  const exchange = "topic_logs";
+export class NotificationController {
+  private _notificationService: NotificationService;
+  constructor() {
+    this._notificationService = Container.get(NotificationService);
+  }
 
-  const producer = Container.get(RabbitMQConnectorIdentifier);
-  console.log(message);
-  const routingKey = `*.${group}`;
+  async sentGroupNotification(req: Request, res: Response, next: NextFunction) {
+    const { project_id, description } = req.body;
+    await this._notificationService.sendGroupNotification(
+      project_id,
+      description
+    );
+    res.status(201).send({ message: "send Group notification successful" });
+  }
 
-  await producer.channel.assertExchange(exchange, "topic", {
-    durable: false,
-  }); // Assert topic exchange
+  async sentUserNotification(req: Request, res: Response, next: NextFunction) {
+    const { user_id, description } = req.body;
+    await this._notificationService.sendUserNotification(user_id, description);
+    res.status(201).send({ message: "send User notification successful" });
+  }
 
-  await producer.channel.publish(
-    exchange,
-    routingKey,
-    Buffer.from(`group${group} : ${message}`) // Use user ID in the message
-  );
-
-  res.status(201).send({ message: "send Group notification successful" });
-
-  setTimeout(async () => {
-    await producer.disconnect();
-  }, 500);
-};
-
-export const sentUserNotification = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const userId = req.body.user_id;
-  const message = req.body.description;
-  const exchange = "topic_logs";
-
-  const producer = Container.get(RabbitMQConnectorIdentifier);
-  console.log(message);
-  const routingKey = `${userId}.*`;
-
-  await producer.channel.assertExchange(exchange, "topic", {
-    durable: false,
-  });
-
-  await producer.channel.publish(
-    exchange,
-    routingKey,
-    Buffer.from(`user${userId} : ${message}`)
-  );
-
-  res.status(201).send({ message: "send User notification successful" });
-};
-
-export const sentAnnouncementNotification = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const message = req.body.description;
-  const exchange = "topic_logs";
-
-  const producer = Container.get(RabbitMQConnectorIdentifier);
-  console.log(message);
-  const routingKey = `#`;
-
-  await producer.channel.assertExchange(exchange, "topic", {
-    durable: false,
-  }); // Assert topic exchange
-
-  await producer.channel.publish(
-    exchange,
-    routingKey,
-    Buffer.from(`Announcement : ${message}`) // Use user ID in the message
-  );
-
-  res
-    .status(201)
-    .send({ message: "send Announcement notification successful" });
-};
+  async sentAnnouncementNotification(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { description } = req.body;
+    await this._notificationService.sendAnnouncementNotification(description);
+    res
+      .status(201)
+      .send({ message: "send Announcement notification successful" });
+  }
+}
