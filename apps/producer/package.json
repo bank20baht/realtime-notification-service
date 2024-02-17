@@ -18,7 +18,10 @@
   "dependencies": {
     "amqplib": "^0.10.3",
     "async-mutex": "^0.4.1",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
+    "reflect-metadata": "^0.2.1",
+    "typedi": "^0.10.0",
     "typescript": "^5.3.3"
   }
 }
