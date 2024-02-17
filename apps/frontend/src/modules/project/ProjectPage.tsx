@@ -38,7 +38,7 @@ const ProjectPage: FC = () => {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `http://localhost:7000/v1/notification/sse/user1/project1`
+      `http://localhost:3000/events/user1/` + project_id
     );
 
     eventSource.addEventListener("message", (event) => {

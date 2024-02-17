@@ -1,46 +1,57 @@
-import express, { NextFunction, Request, Response } from "express";
-import amqp from "amqplib";
+import "reflect-metadata";
+import express from "express";
+import Container, { Token } from "typedi";
+import {
+  RabbitMQConnector,
+  RabbitMQConnectorIdentifier,
+} from "./utils/connections/RabbitMQConnector";
+import cors from "cors";
+import notificationRouter from "./routes/Notification";
 
-const app = express();
+async function initRabbitMQ() {
+  const rabbitMQConnector = new RabbitMQConnector({
+    hostname: "localhost",
+    port: 5672,
+    username: "admin",
+    password: "admin",
+  });
 
-app.use(express.json());
-app.post(
-  "/notification",
-  async (req: Request, res: Response, next: NextFunction) => {
-    const id = req.body.user_id;
-    const group = req.body.group_id;
-    const message = req.body.description;
-    const exchange = "topic_logs"; // Changed to topic exchange name
+  rabbitMQConnector.on("retryExceeded", () => {
+    process.exit(-104);
+  });
+  await rabbitMQConnector.connect();
 
-    console.log(message);
-    const routingKey = `${id}.${group}`; // Combined user ID and group ID as routing key
+  await rabbitMQConnector.createChannel();
+  console.log("RabbitMQ connected");
 
-    try {
-      const connection = await amqp.connect("amqp://admin:admin@localhost");
-      const channel = await connection.createChannel();
+  Container.set(RabbitMQConnectorIdentifier, rabbitMQConnector);
+}
 
-      await channel.assertExchange(exchange, "topic", { durable: false }); // Assert topic exchange
+async function initServer() {
+  const app = express();
+  app.use(express.json());
+  app.use(cors());
 
-      await channel.publish(
-        exchange,
-        routingKey,
-        Buffer.from(`user${id} : ${message}`) // Use user ID in the message
-      );
+  app.get("/check", (req, res) => {
+    res.json({ message: "API working" });
+  });
 
-      res.status(201).send({ message: "send notification successful" });
+  app.use(notificationRouter);
 
-      setTimeout(() => {
-        channel.close();
-        connection.close();
-      }, 500);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ error: "Failed to send notification" });
-    }
+  const PORT = 4000;
+  app.listen(PORT, () => {
+    console.log(`Producer service listening at http://localhost:${PORT}`);
+  });
+}
+
+async function main() {
+  try {
+    await initRabbitMQ();
+    await initServer();
+  } catch (error) {
+    console.error("Error during initialization:", error);
+    process.exit(1);
   }
-);
+}
 
-const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`Sender service listening at http://localhost:${PORT}`);
-});
+main();
