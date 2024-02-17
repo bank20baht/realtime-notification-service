@@ -38,7 +38,7 @@ const ProjectPage: FC = () => {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `http://localhost:3002/consume?user_id=${userId}&group_id=${project_id}`
+      `http://localhost:3000/events/user1/` + project_id
     );
 
     eventSource.addEventListener("message", (event) => {
