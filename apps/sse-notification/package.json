@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --env-file=.env --respawn --transpile-only ./src/index.ts"
+    "dev": "ts-node-dev --env-file=.env --respawn --transpile-only ./src/index.ts",
+    "build": "npx tsc"
   },
   "author": "Nattapong Promthong",
   "license": "MIT",
   "devDependencies": {
     "@types/amqplib": "^0.10.4",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0"

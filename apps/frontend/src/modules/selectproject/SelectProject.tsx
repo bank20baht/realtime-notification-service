@@ -1,25 +1,7 @@
-"use client";
-
 import { useState, useEffect, FC } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import moment from "moment";
-import { IoIosNotifications } from "react-icons/io";
 import CardComponent from "./components/CardComponent";
-
-type Props = {
-  params: {
-    id: string;
-  };
-};
-type NotificationData = {
-  id: string;
-  project_id: string;
-  description: string;
-  status: "unread" | "read";
-  created_at: string;
-  updated_at: string;
-};
 
 const mockProjects = [
   { id: "1", name: "Project A", description: "This is Project A." },
@@ -27,18 +9,8 @@ const mockProjects = [
 ];
 
 const SelectProjectPage: FC = () => {
-  const [notifications, setNotifications] = useState<string[]>([]);
-  const [filter, setFilter] = useState("All");
+  const [, setNotifications] = useState<string[]>([]);
 
-  const params_id = 1;
-
-  const [historyNotification, setHistoryNotification] = useState<
-    NotificationData[]
-  >([]);
-  const [openModal, setOpenModal] = useState(false);
-
-  const userId = "user1";
-  const groupId = "group1";
   useEffect(() => {
     const eventSource = new EventSource(
       `${import.meta.env.VITE_APP_API_SSE_HOST}/events/user1/`
