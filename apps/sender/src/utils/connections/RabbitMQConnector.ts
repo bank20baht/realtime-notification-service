@@ -34,7 +34,7 @@ export class RabbitMQConnector extends EventEmitter {
       if (this.retryCount > this.maxRetries) {
         this.emit("retryExceeded");
       } else {
-        setTimeout(() => this.connect(), 5000); // Retry after  5 seconds
+        setTimeout(() => this.connect(), 5000);
       }
     }
   }

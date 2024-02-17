@@ -10,10 +10,10 @@ import notificationRouter from "./modules/send-notification/NotificationRoutes";
 
 async function initRabbitMQ() {
   const rabbitMQConnector = new RabbitMQConnector({
-    hostname: "localhost",
-    port: 5672,
-    username: "admin",
-    password: "admin",
+    hostname: process.env.RABBITMQ__HOST as string,
+    port: Number.parseInt(process.env.RABBITMQ__PORT || "5672"),
+    username: process.env.RABBITMQ__USER as string,
+    password: process.env.RABBITMQ__PASSWORD as string,
   });
 
   rabbitMQConnector.on("retryExceeded", () => {
@@ -36,14 +36,14 @@ async function initServer() {
     res.json({ message: "API working" });
   });
 
-  // Make sure to register the RabbitMQConnector before setting up the routes
   await initRabbitMQ();
 
   app.use(notificationRouter);
 
-  const PORT = 4000;
-  app.listen(PORT, () => {
-    console.log(`Producer service listening at http://localhost:${PORT}`);
+  app.listen(process.env.PORT, () => {
+    console.log(
+      `Producer service listening at http://localhost:${process.env.PORT}`
+    );
   });
 }
 

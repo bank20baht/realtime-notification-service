@@ -1,6 +1,5 @@
 import { FC, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import SelectProjectPage from "./SelectProject";
 
 const SelectProject = lazy(() => import("./SelectProject"));
 

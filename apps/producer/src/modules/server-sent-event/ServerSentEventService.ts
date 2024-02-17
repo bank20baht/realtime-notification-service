@@ -52,7 +52,6 @@ export class ServerSentEventService {
     });
 
     req.on("error", (err) => {
-      console.error("Request error:", err);
       producerStream.unsubscribe(res);
     });
   }
@@ -126,10 +125,6 @@ export class ServerSentEventService {
   }
 
   private sendEventsToAll(res: Response, data: string) {
-    // Send a comment line to keep the connection alive
-    res.write(":keep-alive\n\n");
-
-    // Send the actual data with the appropriate SSE headers
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   }
 }

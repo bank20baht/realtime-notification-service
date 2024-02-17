@@ -1,6 +1,4 @@
-import { Service } from "typedi";
-
-import Container from "typedi";
+import Container, { Service } from "typedi";
 import {
   RabbitMQConnector,
   RabbitMQConnectorIdentifier,

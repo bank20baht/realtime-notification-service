@@ -10,10 +10,10 @@ import serverSentEvent from "./modules/server-sent-event/ServerSentEventRoutes";
 
 async function initRabbitMQ() {
   const rabbitMQConnector = new RabbitMQConnector({
-    hostname: "localhost",
-    port: 5672,
-    username: "admin",
-    password: "admin",
+    hostname: process.env.RABBITMQ__HOST as string,
+    port: Number.parseInt(process.env.RABBITMQ__PORT || "5672"),
+    username: process.env.RABBITMQ__USER as string,
+    password: process.env.RABBITMQ__PASSWORD as string,
   });
 
   rabbitMQConnector.on("retryExceeded", () => {
@@ -37,21 +37,16 @@ async function initServer() {
   });
 
   app.use(serverSentEvent);
-  const PORT = 3000;
-  app.listen(PORT, () => {
-    console.log(`Producer service listening at http://localhost:${PORT}`);
+
+  app.listen(process.env.PORT, () => {
+    console.log(
+      `Producer service listening at http://localhost:${process.env.PORT}`
+    );
   });
 }
 
 async function main() {
-  try {
-    await initRabbitMQ();
-    await initServer();
-  } catch (error) {
-    console.error("Error during initialization:", error);
-    process.exit(1);
-  }
+  await initRabbitMQ();
+  await initServer();
 }
-
-// Call the main function to start the application
 main();
