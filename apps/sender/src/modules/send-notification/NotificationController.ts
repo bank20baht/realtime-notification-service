@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { NotificationService } from "../services/Notification";
 import Container from "typedi";
+import { NotificationService } from "./NotificationService";
 
 export class NotificationController {
   private _notificationService: NotificationService;

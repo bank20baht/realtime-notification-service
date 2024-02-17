@@ -1,9 +1,9 @@
 // routes.ts
 import express from "express";
-import { NotificationController } from "../controllers/Notification";
+import { NotificationController } from "./NotificationController";
 
 const router = express.Router();
-const notificationController = new NotificationController(); // Instantiate NotificationController
+const notificationController = new NotificationController();
 
 router.post(
   "/user",

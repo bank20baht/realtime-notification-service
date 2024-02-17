@@ -1,20 +1,13 @@
-// NotificationService.ts
 import { Service } from "typedi";
+
+import Container from "typedi";
 import {
   RabbitMQConnector,
   RabbitMQConnectorIdentifier,
-} from "../utils/connections/RabbitMQConnector";
-import Container from "typedi";
+} from "../../utils/connections/RabbitMQConnector";
 
 @Service()
 export class NotificationService {
-  // private _rabbitMQConnector: RabbitMQConnector;
-  // constructor() {
-  //   this._rabbitMQConnector = Container.get<RabbitMQConnector>(
-  //     RabbitMQConnectorIdentifier
-  //   );
-  // }
-
   async sendGroupNotification(group: string, message: string) {
     const exchange = "topic_logs";
     const routingKey = `*.${group}`;

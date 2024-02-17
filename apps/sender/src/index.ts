@@ -6,7 +6,7 @@ import {
   RabbitMQConnectorIdentifier,
 } from "./utils/connections/RabbitMQConnector";
 import cors from "cors";
-import notificationRouter from "./routes/Notification";
+import notificationRouter from "./modules/send-notification/NotificationRoutes";
 
 async function initRabbitMQ() {
   const rabbitMQConnector = new RabbitMQConnector({
