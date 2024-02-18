@@ -7,6 +7,20 @@ import {
 } from "./utils/connections/RabbitMQConnector";
 import cors from "cors";
 import notificationRouter from "./modules/send-notification/NotificationRoutes";
+import {
+  MongoDBConnector,
+  MongoDBConnectorIdentifier,
+} from "./utils/connections/MongodbConnector";
+
+async function initMongoDB() {
+  const mongoConnector = new MongoDBConnector({
+    uri: process.env.MONGODB_URI,
+  });
+
+  await mongoConnector.connect();
+
+  Container.set(MongoDBConnectorIdentifier, mongoConnector);
+}
 
 async function initRabbitMQ() {
   const rabbitMQConnector = new RabbitMQConnector({
@@ -37,6 +51,7 @@ async function initServer() {
   });
 
   await initRabbitMQ();
+  await initMongoDB();
 
   app.use(notificationRouter);
 

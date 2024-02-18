@@ -4,7 +4,8 @@
     "module": "commonjs",
     "outDir": "dist",
     "rootDir": "src",
-    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
       "@app/*": ["./src/*"],
       "@test/*": ["./test/*"]
