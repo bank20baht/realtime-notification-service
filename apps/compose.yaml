@@ -10,29 +10,36 @@ services:
       RABBITMQ_DEFAULT_PASS: admin
     restart: unless-stopped
 
-  client:
-    build: ./frontend
-    container_name: web-demo
-    ports:
-      - "8080:80"
-    env_file:
-      - ./frontend/.env
+  # client:
+  #   build: ./frontend
+  #   container_name: web-demo
+  #   ports:
+  #     - "8080:80"
+  #   env_file:
+  #     - ./frontend/.env
 
-  restful-server:
-    build: ./restful-notification
-    container_name: api-restful
-    ports:
-      - "4000:4000"
-    env_file:
-      - ./restful-notification/.env
+  # restful-server:
+  #   build: ./restful-notification
+  #   ports:
+  #     - "4000:4000"
+  #   env_file:
+  #     - ./restful-notification/.env
 
-  sse-server:
-    build: ./sse-notification
-    container_name: api-sse
+  # sse-server:
+  #   build: ./sse-notification
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - ./sse-notification/.env
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongo-db
     ports:
-      - "3000:3000"
-    env_file:
-      - ./sse-notification/.env
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
 
 volumes:
-  mysql_data:
+  mongodb_data:
